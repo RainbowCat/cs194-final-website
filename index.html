@@ -21,197 +21,15 @@
             <p class="toc_title">Table of Contents :)</p>
             <ul>
                 <li>
-                    <a href="#lightfield">Project 1: LIGHTFIELD CAMERAS</a>
+                    <a href="#nnart">Project 1: A Neural Algorithm of Artistic Style</a>
                 </li>
                 <li>
-                    <a href="#nnart">Project 2: A Neural Algorithm of Artistic Style</a>
+                    <a href="#lightfield">Project 2: LIGHTFIELD CAMERAS</a>
                 </li>
             </ul>
         </div>
 
         <hr class="spacer0">
-
-        <h1 id="lightfield">CS194 Final Project: Lightfield Cameras
-            <br>
-            <i>Depth Refocusing and Aperture Adjustment with Light Field Data</i>
-            <br>
-            <b>April Sin</b>
-        </h1>
-
-        <h2>Overview</h2>
-        <p>We will be exploring light field cameras from <a
-                href="http://graphics.stanford.edu/papers/lfcamera/lfcamera-150dpi.pdf">this paper</a> using datasets
-            from the
-            <a href="http://lightfield.stanford.edu/lfs.html">Stanford light Field Archive</a>. The archive provides
-            lightfield image sets from 17x17 grids, giving 289 pictures total. All images share a common focal plane.
-        </p>
-
-        <h2>Part 1: Refocusing</h2>
-        <p>Focusing of are done by changing the focal plane of lenses. We can recreate focusing at various depths by
-            averaging the lightfield images with adjustments.
-            We just need to <b>shift the images</b> to align light rays from a specified depth. The rays that are not at
-            that
-            depth (hence not aligned) will then create a blurry effect in our synthetic image (averaged image).</p>
-        <b>Here are the results:</b>
-        <div class="row">
-            <div class="column">
-                <img src="http://media.githubusercontent.com/media/rainbowcat/cs194-final-website/master/tarot_less-angle_rectified_refocus-1608264453.6358662.gif"
-                    alt="Refocus GIF" />
-                <figcaption>Tarot Cards and Crystal Ball <br> <i>(small angular extent)</i></figcaption>
-            </div>
-            <div class="column">
-                <img style="margin-top: 50px"
-                    src="http://media.githubusercontent.com/media/rainbowcat/cs194-final-website/master/bulldozer_rectified_refocus_alphas=[-0.2,1.2,20]_1608353909.6372669.gif"
-                    alt="Refocus GIF" />
-                <figcaption>Lego Bulldozer</figcaption>
-            </div>
-            <div class="column">
-                <img src="http://media.githubusercontent.com/media/rainbowcat/cs194-final-website/master/knights_rectified_refocus_alphas=[-0.2,1.2,20]_1608348784.460157.gif"
-                    alt="Refocus GIF" />
-                <figcaption>Lego Knights</figcaption>
-            </div>
-        </div>
-
-        <h2>Part 2: Aperture Adjustment</h2>
-        <p>In cameras, aperture controls how much light rays reaches the film / light sensor. A large aperture means
-            more
-            light are let into the camera and recorded, and a small aperture means less light are recorded. We can
-            imitate
-            this by selecting subsets of our lightfield images.</p>
-
-        <p>Visualizing it might help with understanding.</p>
-        <p>Consider the 17x17 grid. If we set the aperture to 0%, then no light should be let in. Conversely, 100% means
-            to
-            keep all light rays.</p>
-        <p>The following masks are essentially the masks used for selecting images out of the 17x17 grids.</p>
-        <div class="row">
-            <div class="column_5">
-                <img src="a-0.png" alt="Aperture = 0%" />
-                <figcaption>Aperture = 0%</figcaption>
-            </div>
-            <div class="column_5">
-                <img src="a-25.png" alt="Aperture = 25%" />
-                <figcaption>Aperture = 25%</figcaption>
-            </div>
-            <div class="column_5">
-                <img src="a-50.png" alt="Aperture = 50%" />
-                <figcaption>Aperture = 50%</figcaption>
-            </div>
-            <div class="column_5">
-                <img src="a-75.png" alt="Aperture = 75%" />
-                <figcaption>Aperture = 75%</figcaption>
-            </div>
-            <div class="column_5">
-                <img src="a-100.png" alt="Aperture = 100%" />
-                <figcaption>Aperture = 100%</figcaption>
-            </div>
-        </div>
-
-        <p>By averaging the selected subsets of images, we can create synthetic images with multiple aperture values.
-        </p>
-
-        <b>Here are the results:</b>
-        <i>(I used 20 alphas in the range of [-0.2, 1.2] to create a more obvious
-            effect.)</i>
-        <div class="row">
-            <div class="column">
-                <img src="http://media.githubusercontent.com/media/rainbowcat/cs194-final-website/master/tarot_large-angle_rectified_aperture-1608264739.414569.gif"
-                    alt="Aperture GIF" />
-                <figcaption>Tarot Cards and Crystal Ball <br> <i>(large angular extent)</i></figcaption>
-            </div>
-            <div class="column">
-                <img style="margin-top: 50px"
-                    src="http://media.githubusercontent.com/media/rainbowcat/cs194-final-website/master/bulldozer_rectified_aperture_alphas=[-0.2,1.2,20]_1608354327.243883.gif"
-                    alt="Aperture GIF" />
-                <figcaption>Lego Bulldozer</figcaption>
-            </div>
-            <div class="column">
-                <img src="http://media.githubusercontent.com/media/rainbowcat/cs194-final-website/master/knights_rectified_aperture_alphas=[-0.2,1.2,20]_1608349071.368806.gif"
-                    alt="Aperture GIF" />
-                <figcaption>Lego Knights</figcaption>
-            </div>
-        </div>
-
-        <h2>What have I learned?</h2>
-        <p>What have I learned? I learned a lot! d=(´▽｀)=b </p>
-        <p>I had to understand the intrinsics of cameras in order to wrap my head
-            around what the heck is going on haha. From reading the paper, it made me more interested in optics too!
-        </p>
-        <p>
-            Being an amature photographer myself, I would love to have discovered this earlier. I always stuggled with
-            manual focusing. Auto-focus are not the best to help you get the best close up shots (੭ ˃̣̣̥ ㅂ˂̣̣̥)੭ु </p>
-        <p>It's a shame this technology is not very widely used. It would be really interesting and fun to see
-            professional photographers, animator, and even filmakers make use of light field cameras °˖✧◝(⁰▿⁰)◜✧˖°</p>
-
-        <h2>Bells and Whisles</h2>
-        <h3>Interactive Refocusing</h3>
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/Dzl3mvtrbQw" frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen></iframe>
-        <h3>Custom images</h3>
-        <p>I tried taking my own photos and ran the same algorithm on them. The photos create a 3x3 grid of closeups of
-            my keyboard and were taken with my phone (Samsung S9+) by hand.
-        </p>
-        <p>When taking the picures I set a fix aperture
-            and shutter speed. Then, I attempt to vary my arms by the smallest amount possible. </p>
-        <p>The results are pretty bad (as expected) but here they are o(´^｀)o </p>
-        <p>Some reasons my custom dataset is not good for refocusing and aperture adjusting would be:</p>
-
-        <ul>
-            <li>Hardware Errors
-                <ul>
-                    <li>
-                        <div class="row">
-                            <div class="column" style="text-align: left !important;">
-                                I tried keeping everything in focus by shooting close-ups of my keyboard. But my phone
-                                still
-                                natually
-                                have focus, and creates slight blurs towards the back of my keyboard.
-                                <br>(See image on
-                                right)
-                            </div>
-
-                            <div class="column_4">
-                                <img style=" height: 200px" src="keyboard.jpg" />
-                                <figcaption>The back of the image is slightly blurred.</figcaption>
-                            </div>
-                        </div>
-
-                    </li>
-                </ul>
-            </li>
-
-            <li>Human Errors
-                <ul>
-                    <li>
-                        Although I attempted to move my arms along a grid, they are just far too unstable and
-                        inaccurate. Each
-                        image doesn't vary with each other by a constant amount.
-                    </li>
-                    <li>
-                        The (u, v) values I entered for the images are just estimates from eye-balling. And they are
-                        also
-                        inaccurate.
-                    </li>
-                </ul>
-            </li>
-        </ul>
-        <div class="row" style="height:300px;">
-            <div class="column_3">
-                <img src="http://media.githubusercontent.com/media/rainbowcat/cs194-final-website/master/keyboard_refocus_alphas=[0.0,1.0,10]_1608345533.507776.gif"
-                    alt="Refocus GIF" />
-                <figcaption>Refocusing</figcaption>
-            </div>
-            <div class="column_3">
-                <img src="http://media.githubusercontent.com/media/rainbowcat/cs194-final-website/master/keyboard_aperture_alphas=[0.0,1.0,10]_1608345370.293209.gif"
-                    alt="Aperture GIF" />
-                <figcaption>Apeture Adjusting</figcaption>
-            </div>
-        </div>
-        </div>
-
-
-        <hr class="spacer1">
 
 
         <h1 id="nnart">CS194 Final Project: A Neural Algorithm of Artistic Style
@@ -394,13 +212,208 @@
             </div>
         </div>
 
+
+        <hr class="spacer1">
+
+
+        <h1 id="lightfield">CS194 Final Project: Lightfield Cameras
+            <br>
+            <i>Depth Refocusing and Aperture Adjustment with Light Field Data</i>
+            <br>
+            <b>April Sin</b>
+        </h1>
+
+        <h2>Overview</h2>
+        <p>We will be exploring light field cameras from <a
+                href="http://graphics.stanford.edu/papers/lfcamera/lfcamera-150dpi.pdf">this paper</a> using datasets
+            from the
+            <a href="http://lightfield.stanford.edu/lfs.html">Stanford light Field Archive</a>. The archive provides
+            lightfield image sets from 17x17 grids, giving 289 pictures total. All images share a common focal plane.
+        </p>
+
+        <h2>Part 1: Refocusing</h2>
+        <p>Focusing of are done by changing the focal plane of lenses. We can recreate focusing at various depths by
+            averaging the lightfield images with adjustments.
+            We just need to <b>shift the images</b> to align light rays from a specified depth. The rays that are not at
+            that
+            depth (hence not aligned) will then create a blurry effect in our synthetic image (averaged image).</p>
+        <b>Here are the results:</b>
+        <div class="row">
+            <div class="column">
+                <img src="http://media.githubusercontent.com/media/rainbowcat/cs194-final-website/master/tarot_less-angle_rectified_refocus-1608264453.6358662.gif"
+                    alt="Refocus GIF" />
+                <figcaption>Tarot Cards and Crystal Ball <br> <i>(small angular extent)</i></figcaption>
+            </div>
+            <div class="column">
+                <img style="margin-top: 50px"
+                    src="http://media.githubusercontent.com/media/rainbowcat/cs194-final-website/master/bulldozer_rectified_refocus_alphas=[-0.2,1.2,20]_1608353909.6372669.gif"
+                    alt="Refocus GIF" />
+                <figcaption>Lego Bulldozer</figcaption>
+            </div>
+            <div class="column">
+                <img src="http://media.githubusercontent.com/media/rainbowcat/cs194-final-website/master/knights_rectified_refocus_alphas=[-0.2,1.2,20]_1608348784.460157.gif"
+                    alt="Refocus GIF" />
+                <figcaption>Lego Knights</figcaption>
+            </div>
+        </div>
+
+        <h2>Part 2: Aperture Adjustment</h2>
+        <p>In cameras, aperture controls how much light rays reaches the film / light sensor. A large aperture means
+            more
+            light are let into the camera and recorded, and a small aperture means less light are recorded. We can
+            imitate
+            this by selecting subsets of our lightfield images.</p>
+
+        <p>Visualizing it might help with understanding.</p>
+        <p>Consider the 17x17 grid. If we set the aperture to 0%, then no light should be let in. Conversely, 100% means
+            to
+            keep all light rays.</p>
+        <p>The following masks are essentially the masks used for selecting images out of the 17x17 grids.</p>
+        <div class="row">
+            <div class="column_5">
+                <img src="a-0.png" alt="Aperture = 0%" />
+                <figcaption>Aperture = 0%</figcaption>
+            </div>
+            <div class="column_5">
+                <img src="a-25.png" alt="Aperture = 25%" />
+                <figcaption>Aperture = 25%</figcaption>
+            </div>
+            <div class="column_5">
+                <img src="a-50.png" alt="Aperture = 50%" />
+                <figcaption>Aperture = 50%</figcaption>
+            </div>
+            <div class="column_5">
+                <img src="a-75.png" alt="Aperture = 75%" />
+                <figcaption>Aperture = 75%</figcaption>
+            </div>
+            <div class="column_5">
+                <img src="a-100.png" alt="Aperture = 100%" />
+                <figcaption>Aperture = 100%</figcaption>
+            </div>
+        </div>
+
+        <p>By averaging the selected subsets of images, we can create synthetic images with multiple aperture values.
+        </p>
+
+        <b>Here are the results:</b>
+        <i>(I used 20 alphas in the range of [-0.2, 1.2] to create a more obvious
+            effect.)</i>
+        <div class="row">
+            <div class="column">
+                <img src="http://media.githubusercontent.com/media/rainbowcat/cs194-final-website/master/tarot_large-angle_rectified_aperture-1608264739.414569.gif"
+                    alt="Aperture GIF" />
+                <figcaption>Tarot Cards and Crystal Ball <br> <i>(large angular extent)</i></figcaption>
+            </div>
+            <div class="column">
+                <img style="margin-top: 50px"
+                    src="http://media.githubusercontent.com/media/rainbowcat/cs194-final-website/master/bulldozer_rectified_aperture_alphas=[-0.2,1.2,20]_1608354327.243883.gif"
+                    alt="Aperture GIF" />
+                <figcaption>Lego Bulldozer</figcaption>
+            </div>
+            <div class="column">
+                <img src="http://media.githubusercontent.com/media/rainbowcat/cs194-final-website/master/knights_rectified_aperture_alphas=[-0.2,1.2,20]_1608349071.368806.gif"
+                    alt="Aperture GIF" />
+                <figcaption>Lego Knights</figcaption>
+            </div>
+        </div>
+
+        <h2>What have I learned?</h2>
+        <p>What have I learned? I learned a lot! d=(´▽｀)=b </p>
+        <p>I had to understand the intrinsics of cameras in order to wrap my head
+            around what the heck is going on haha. From reading the paper, it made me more interested in optics too!
+        </p>
+        <p>
+            Being an amature photographer myself, I would love to have discovered this earlier. I always stuggled with
+            manual focusing. Auto-focus are not the best to help you get the best close up shots (੭ ˃̣̣̥ ㅂ˂̣̣̥)੭ु </p>
+        <p>It's a shame this technology is not very widely used. It would be really interesting and fun to see
+            professional photographers, animator, and even filmakers make use of light field cameras °˖✧◝(⁰▿⁰)◜✧˖°</p>
+
+        <h2>Bells and Whisles</h2>
+        <h3>Interactive Refocusing</h3>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/Dzl3mvtrbQw" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen></iframe>
+        <h3>Custom images</h3>
+        <p>I tried taking my own photos and ran the same algorithm on them. The photos create a 3x3 grid of closeups of
+            my keyboard and were taken with my phone (Samsung S9+) by hand.
+        </p>
+        <p>When taking the picures I set a fix aperture
+            and shutter speed. Then, I attempt to vary my arms by the smallest amount possible. </p>
+        <p>The results are pretty bad (as expected) but here they are o(´^｀)o </p>
+        <p>Some reasons my custom dataset is not good for refocusing and aperture adjusting would be:</p>
+
+        <ul>
+            <li>Hardware Errors
+                <ul>
+                    <li>
+                        <div class="row">
+                            <div class="column" style="text-align: left !important;">
+                                I tried keeping everything in focus by shooting close-ups of my keyboard. But my phone
+                                still
+                                natually
+                                have focus, and creates slight blurs towards the back of my keyboard.
+                                <br>(See image on
+                                right)
+                            </div>
+
+                            <div class="column_4">
+                                <img style=" height: 200px" src="keyboard.jpg" />
+                                <figcaption>The back of the image is slightly blurred.</figcaption>
+                            </div>
+                        </div>
+
+                    </li>
+                </ul>
+            </li>
+
+            <li>Human Errors
+                <ul>
+                    <li>
+                        Although I attempted to move my arms along a grid, they are just far too unstable and
+                        inaccurate. Each
+                        image doesn't vary with each other by a constant amount.
+                    </li>
+                    <li>
+                        The (u, v) values I entered for the images are just estimates from eye-balling. And they are
+                        also
+                        inaccurate.
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <div class="row" style="height:300px;">
+            <div class="column_3">
+                <img src="http://media.githubusercontent.com/media/rainbowcat/cs194-final-website/master/keyboard_refocus_alphas=[0.0,1.0,10]_1608345533.507776.gif"
+                    alt="Refocus GIF" />
+                <figcaption>Refocusing</figcaption>
+            </div>
+            <div class="column_3">
+                <img src="http://media.githubusercontent.com/media/rainbowcat/cs194-final-website/master/keyboard_aperture_alphas=[0.0,1.0,10]_1608345370.293209.gif"
+                    alt="Aperture GIF" />
+                <figcaption>Apeture Adjusting</figcaption>
+            </div>
+        </div>
+        </div>
+
+        <div class="column">
+            <h1 style="margin-top: 50px; color:rgb(209, 77, 0);">~~ Remarks ~~</h1>
+            <p>
+                I'm really really glad that I signed up for this class. It's been the most worth it class at Berkeley
+                for me
+                so far! I've
+                learned <i>a lot</i>, both theoritically and physically by gaining experience. Would like to thank
+                Professor
+                Efros and the course staff for making this course work even during this pandemic.
+            </p>
+            <p>
+                <b>Thank you!</b> ヽ(^o^)ρ┳┻┳°σ(^o^)/
+            </p>
+        </div>
         <footer>
             <hr class="spacer2">
             <a style="float:left;" href="#toc_container">Back to top</a>
             <p style="float:right;">April Sin @ Fall 2020, UC Berkeley</p>
         </footer>
-    </body>
-
     </body>
 
 </html>
