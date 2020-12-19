@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="mystyle.css" />
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+        </script>
+        <script type="text/javascript"
+            src="http://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+            </script>
+        <title>
+            CS194 Final Project - Fall 2020
+        </title>
+    </head>
+
+    <body>
+        <div id="toc_container">
+            <p class="toc_title">Table of Contents :)</p>
+            <ul>
+                <li>
+                    <a href="#lightfield">Project 1: LIGHTFIELD CAMERAS</a>
+                </li>
+                <li>
+                    <a href="#nnart">Project 2: A Neural Algorithm of Artistic Style</a>
+                </li>
+            </ul>
+        </div>
+
+        <hr class="spacer0">
+
+        <h1 id="lightfield">CS194 Final Project: Lightfield Cameras
+            <br>
+            <i>Depth Refocusing and Aperture Adjustment with Light Field Data</i>
+            <br>
+            <b>April Sin</b>
+        </h1>
+
+        <h2>Overview</h2>
+        <p>We will be exploring light field cameras from <a
+                href="http://graphics.stanford.edu/papers/lfcamera/lfcamera-150dpi.pdf">this paper</a> using datasets
+            from the
+            <a href="http://lightfield.stanford.edu/lfs.html">Stanford light Field Archive</a>. The archive provides
+            lightfield image sets from 17x17 grids, giving 289 pictures total. All images share a common focal plane.
+        </p>
+
+        <h2>Part 1: Refocusing</h2>
+        <p>Focusing of are done by changing the focal plane of lenses. We can recreate focusing at various depths by
+            averaging the lightfield images with adjustments.
+            We just need to <b>shift the images</b> to align light rays from a specified depth. The rays that are not at
+            that
+            depth (hence not aligned) will then create a blurry effect in our synthetic image (averaged image).</p>
+        <b>Here are the results:</b>
+        <div class="row">
+            <div class="column">
+                <img src="tarot_less-angle_rectified_refocus-1608264453.6358662.gif" alt="Refocus GIF" />
+                <figcaption>Tarot Cards and Crystal Ball <br> <i>(small angular extent)</i></figcaption>
+            </div>
+            <div class="column">
+                <img style="margin-top: 50px"
+                    src="bulldozer_rectified_refocus_alphas=[-0.2,1.2,20]_1608353909.6372669.gif" alt="Refocus GIF" />
+                <figcaption>Lego Bulldozer</figcaption>
+            </div>
+            <div class="column">
+                <img src="knights_rectified_refocus_alphas=[-0.2,1.2,20]_1608348784.460157.gif" alt="Refocus GIF" />
+                <figcaption>Lego Knights</figcaption>
+            </div>
+        </div>
+
+        <h2>Part 2: Aperture Adjustment</h2>
+        <p>In cameras, aperture controls how much light rays reaches the film / light sensor. A large aperture means
+            more
+            light are let into the camera and recorded, and a small aperture means less light are recorded. We can
+            imitate
+            this by selecting subsets of our lightfield images.</p>
+
+        <p>Visualizing it might help with understanding.</p>
+        <p>Consider the 17x17 grid. If we set the aperture to 0%, then no light should be let in. Conversely, 100% means
+            to
+            keep all light rays.</p>
+        <p>The following masks are essentially the masks used for selecting images out of the 17x17 grids.</p>
+        <div class="row">
+            <div class="column_5">
+                <img src="a-0.png" alt="Aperture = 0%" />
+                <figcaption>Aperture = 0%</figcaption>
+            </div>
+            <div class="column_5">
+                <img src="a-25.png" alt="Aperture = 25%" />
+                <figcaption>Aperture = 25%</figcaption>
+            </div>
+            <div class="column_5">
+                <img src="a-50.png" alt="Aperture = 50%" />
+                <figcaption>Aperture = 50%</figcaption>
+            </div>
+            <div class="column_5">
+                <img src="a-75.png" alt="Aperture = 75%" />
+                <figcaption>Aperture = 75%</figcaption>
+            </div>
+            <div class="column_5">
+                <img src="a-100.png" alt="Aperture = 100%" />
+                <figcaption>Aperture = 100%</figcaption>
+            </div>
+        </div>
+
+        <p>By averaging the selected subsets of images, we can create synthetic images with multiple aperture values.
+        </p>
+
+        <b>Here are the results:</b>
+        <i>(I used 20 alphas in the range of [-0.2, 1.2] to create a more obvious
+            effect.)</i>
+        <div class="row">
+            <div class="column">
+                <img src="tarot_large-angle_rectified_aperture-1608264739.414569.gif" alt="Aperture GIF" />
+                <figcaption>Tarot Cards and Crystal Ball <br> <i>(large angular extent)</i></figcaption>
+            </div>
+            <div class="column">
+                <img style="margin-top: 50px"
+                    src="bulldozer_rectified_aperture_alphas=[-0.2,1.2,20]_1608354327.243883.gif" alt="Aperture GIF" />
+                <figcaption>Lego Bulldozer</figcaption>
+            </div>
+            <div class="column">
+                <img src="knights_rectified_aperture_alphas=[-0.2,1.2,20]_1608349071.368806.gif" alt="Aperture GIF" />
+                <figcaption>Lego Knights</figcaption>
+            </div>
+        </div>
+
+        <h2>Bells and Whisles</h2>
+        <h3>Interactive Refocusing</h3>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/Dzl3mvtrbQw" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen></iframe>
+        <h3>Custom images</h3>
+        <p>I tried taking my own photos and ran the same algorithm on them. The photos create a 3x3 grid of closeups of
+            my keyboard and were taken with my phone (Samsung S9+) by hand.
+        </p>
+        <p>When taking the picures I set a fix aperture
+            and shutter speed. Then, I attempt to vary my arms by the smallest amount possible. </p>
+        <p>The results are pretty bad (as expected) but here they are o(´^｀)o </p>
+        <p>Some reasons my custom dataset is not good for refocusing and aperture adjusting would be:</p>
+
+        <ul>
+            <li>Hardware Errors
+                <ul>
+                    <li>
+                        <div class="row">
+                            <div class="column" style="text-align: left !important;">
+                                I tried keeping everything in focus by shooting close-ups of my keyboard. But my phone
+                                still
+                                natually
+                                have focus, and creates slight blurs towards the back of my keyboard.
+                                <br>(See image on
+                                right)
+                            </div>
+
+                            <div class="column_4">
+                                <img style=" height: 200px" src="../data/keyboard/1_2_-30_30.jpg" />
+                                <figcaption>The back of the image is slightly blurred.</figcaption>
+                            </div>
+                        </div>
+
+                    </li>
+                </ul>
+            </li>
+
+            <li>Human Errors
+                <ul>
+                    <li>
+                        Although I attempted to move my arms along a grid, they are just far too unstable and
+                        inaccurate. Each
+                        image doesn't vary with each other by a constant amount.
+                    </li>
+                    <li>
+                        The (u, v) values I entered for the images are just estimates from eye-balling. And they are
+                        also
+                        inaccurate.
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <div class="row" style="height:300px;">
+            <div class="column_3">
+                <img src="keyboard_refocus_alphas=[0.0,1.0,10]_1608345533.507776.gif" alt="Refocus GIF" />
+                <figcaption>Refocusing</figcaption>
+            </div>
+            <div class="column_3">
+                <img src="keyboard_aperture_alphas=[0.0,1.0,10]_1608345370.293209.gif" alt="Aperture GIF" />
+                <figcaption>Apeture Adjusting</figcaption>
+            </div>
+        </div>
+        </div>
+
+        <hr class="spacer1">
+
+        <h1 id="nnart">CS194 Final Project: A Neural Algorithm of Artistic Style
+            <br>
+            <b>April Sin</b>
+        </h1>
+
+        <h2>Overview</h2>
+        <p>We will be reimplementing <a href="https://arxiv.org/pdf/1508.06576.pdf">this paper</a>. The basic idea it to
+            use convolutional neural networks to extract
+            the art style from one image (the style image) and transfer it to another (the content image).</p>
+
+        <h2>My style transfer model</h2>
+        <h3>Algorithm</h3>
+        <p>Following the algorithm in the paper, I used ImageNet's pretrained VGG19 model availabe
+            from <code>PyTorch</code> (see <a
+                href="https://pytorch.org/docs/stable/torchvision/models.html"><code>torchvision.models</code></a>) as
+            the base model. Then create a wrapper model on top of it for the style transfer.
+        </p>
+
+        <p>I used the basic Adam optimizer and the loss function from the paper.</p>
+        <p>The loss function is: $$Loss_{total} = weight_{content} * Loss_{content} + weight_{style} *
+            Loss_{style}$$</p>
+
+        <h3>Hyper-parameters</h3>
+        <p>I experimented with a series of combinations for {content_weight, style_weight, num_epochs, learning_rate}.
+        </p>
+        <p>In the paper, the researchers got best results when using <code>style_weight = 1e4</code>. However, I got
+            best results with <code>style_weight = 1e6</code> <br>(consider <code>content_weight = 1). </code></p>
+        <p>I thought I would need to train for very long, but after a few 100 epochs, the results were actually pretty
+            good already. I ended up with <code>num_epochs = 1000</code>, it seems to give a balance between content and
+            style. And a
+            larger learning rate seems
+            to help too.</p>
+
+
+
+        <h4>Inputs:</h4>
+        <div class="row">
+            <div class="column">
+                <img style="margin-top: 50px" src="kitty.jpg" alt="content" />
+                <figcaption>Content Image
+                </figcaption>
+            </div>
+            <div class="column">
+                <img src="starry.jpg" alt="style" />
+                <figcaption>Style Image</figcaption>
+            </div>
+        </div>
+
+        <b>Results:</b>
+        <div class="row">
+            <div class="column_5">
+                <img src="kitty-starry-sw=100.0-ne=1000-lr=0.01_resized.jpg" />
+                <figcaption><code>style_weight=100.0, num_epochs=1000, learn_rate=0.01</code>
+                </figcaption>
+            </div>
+            <div class="column_5">
+                <img src="kitty-starry-sw=1000.0-ne=1000-lr=0.01_resized.jpg" />
+                <figcaption><code>style_weight=1000.0, num_epochs=1000, learn_rate=0.01</code>
+                </figcaption>
+            </div>
+            <div class="column_5">
+                <img src="kitty-starry-sw=10000.0-ne=1000-lr=0.01_resized.jpg" />
+                <figcaption><code>style_weight=10000.0, num_epochs=1000, learn_rate=0.01</code>
+                </figcaption>
+            </div>
+            <div class="column_5">
+                <img src="kitty-starry-sw=100000.0-ne=1000-lr=0.01_resized.jpg" />
+                <figcaption><code>style_weight=10000.0, num_epochs=1000, learn_rate=0.01</code>
+                </figcaption>
+            </div>
+            <div class="column_5">
+                <img src="kitty-starry-sw=1000000.0-ne=1000-lr=0.01_resized.jpg" />
+                <figcaption><code>style_weight=10000.0, num_epochs=1000, learn_rate=0.01</code>
+                </figcaption>
+            </div>
+        </div>
+        <div class="row">
+            <div class="column_5">
+                <img src="kitty-starry-sw=100.0-ne=1000-lr=0.005_resized.jpg" />
+                <figcaption><code>style_weight=100.0, num_epochs=1000, learn_rate=0.005</code>
+                </figcaption>
+            </div>
+            <div class="column_5">
+                <img src="kitty-starry-sw=1000.0-ne=1000-lr=0.005_resized.jpg" />
+                <figcaption><code>style_weight=1000.0, num_epochs=1000, learn_rate=0.005</code>
+                </figcaption>
+            </div>
+            <div class="column_5">
+                <img src="kitty-starry-sw=10000.0-ne=1000-lr=0.005_resized.jpg" />
+                <figcaption><code>style_weight=10000.0, num_epochs=1000, learn_rate=0.005</code>
+                </figcaption>
+            </div>
+            <div class="column_5">
+                <img src="kitty-starry-sw=100000.0-ne=1000-lr=0.005_resized.jpg" />
+                <figcaption><code>style_weight=10000.0, num_epochs=1000, learn_rate=0.005</code>
+                </figcaption>
+            </div>
+            <div class="column_5">
+                <img src="kitty-starry-sw=1000000.0-ne=1000-lr=0.005_resized.jpg" />
+                <figcaption><code>style_weight=10000.0, num_epochs=1000, learn_rate=0.005</code>
+                </figcaption>
+            </div>
+        </div>
+        <div class="row">
+            <div class="column_5">
+                <img src="kitty-starry-sw=100.0-ne=1000-lr=0.001_resized.jpg" />
+                <figcaption><code>style_weight=100.0, num_epochs=1000, learn_rate=0.001</code>
+                </figcaption>
+            </div>
+            <div class="column_5">
+                <img src="kitty-starry-sw=1000.0-ne=1000-lr=0.001_resized.jpg" />
+                <figcaption><code>style_weight=1000.0, num_epochs=1000, learn_rate=0.001</code>
+                </figcaption>
+            </div>
+            <div class="column_5">
+                <img src="kitty-starry-sw=10000.0-ne=1000-lr=0.001_resized.jpg" />
+                <figcaption><code>style_weight=10000.0, num_epochs=1000, learn_rate=0.001</code>
+                </figcaption>
+            </div>
+            <div class="column_5">
+                <img src="kitty-starry-sw=100000.0-ne=1000-lr=0.001_resized.jpg" />
+                <figcaption><code>style_weight=10000.0, num_epochs=1000, learn_rate=0.001</code>
+                </figcaption>
+            </div>
+            <div class="column_5">
+                <img src="kitty-starry-sw=1000000.0-ne=1000-lr=0.001_resized.jpg" />
+                <figcaption><code>style_weight=10000.0, num_epochs=1000, learn_rate=0.001</code>
+                </figcaption>
+            </div>
+        </div>
+
+        <h2>Personal Favourites (i.e more pretty picutures Ｏ(≧▽≦)Ｏ)</h2>
+        <p></p>
+        <div class="row">
+            <div class="column_5">
+                <img class="fix-height" src="starry.jpg" />
+                <figcaption>Starry Night ✨ <i> (Van Gogh) </i>
+                </figcaption>
+            </div>
+            <div class="column_5">
+                <img src="kitty-starry-sw=100000.0-ne=1000-lr=0.01_resized.jpg" />
+                <figcaption><code>style_weight=10000.0, num_epochs=1000, learn_rate=0.01</code>
+                </figcaption>
+            </div>
+        </div>
+        <div class="row">
+            <div class="column_5">
+                <img class="fix-height" src="tsunami.jpg" />
+                <figcaption>The Great Wave off Kanagawa 神奈川沖浪裏 <br><i> (Katsushika Hokusai 葛飾 北斎) </i>
+                </figcaption>
+            </div>
+            <div class="column_5">
+                <img src="kitty-tsunami-sw=100000.0-ne=1000-lr=0.005_resized.jpg" />
+                <figcaption><code>style_weight=10000.0, num_epochs=1000, learn_rate=0.005</code>
+                </figcaption>
+            </div>
+        </div>
+        <div class="row">
+            <div class="column_5">
+                <img class="fix-height" src="rain-princess.jpg" />
+                <figcaption>Rain Pricess <i> (Leonid Afremov)</i>
+                </figcaption>
+            </div>
+            <div class="column_5">
+                <img src="kitty-rain-princess-sw=1000000.0-ne=1000-lr=0.01_resized.jpg" />
+                <figcaption><code>style_weight=1000000.0, num_epochs=1000, learn_rate=0.01</code>
+                </figcaption>
+            </div>
+        </div>
+        <div class="row">
+            <div class="column_5">
+                <img class="fix-height" src="femme.jpg" />
+                <figcaption>Seated Nude, 1909 <i>(Picasso)</i>
+                </figcaption>
+            </div>
+            <div class="column_5">
+                <img src="kitty-femme-sw=100000.0-ne=1000-lr=0.01_resized.jpg" />
+                <figcaption><code>style_weight=10000.0, num_epochs=1000, learn_rate=0.01</code>
+                </figcaption>
+            </div>
+        </div>
+        <footer>
+            <hr class="spacer2">
+            <a style="float:left;" href="#toc_container">Back to top</a>
+            <p style="float:right;">April Sin @ Fall 2020, UC Berkeley</p>
+        </footer>
+    </body>
+
+    </body>
+
+</html>
